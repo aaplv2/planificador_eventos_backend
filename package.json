@@ -1,0 +1,32 @@
+{
+  "name": "planificador_eventos_backend",
+  "version": "1.0.0",
+  "description": "tripleten_projecto_final",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/aaplv2/planificador_eventos_backend.git"
+  },
+  "keywords": [
+    "backend",
+    "planificador",
+    "eventos"
+  ],
+  "author": "aaplv2",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aaplv2/planificador_eventos_backend/issues"
+  },
+  "homepage": "https://github.com/aaplv2/planificador_eventos_backend#readme",
+  "dependencies": {
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
