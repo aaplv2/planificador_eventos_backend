@@ -13,15 +13,13 @@ const app = express();
 
 app.use(cors());
 
-app.use(express.static("images"))
+app.use(express.static("images"));
 
 app.get("/", (req, res) => {
   res.send("Hola mundo");
 });
 
 app.post("/upload", upload.single("file"), (req, res) => {
-  console.log(req.body);
-  console.log(req.file);
   fs.writeFile(
     `../planificador_eventos_backend/images/${req.file.originalname}`,
     req.file.buffer,
@@ -31,7 +29,11 @@ app.post("/upload", upload.single("file"), (req, res) => {
         res.status(500).send("Error");
       }
       event
-        .create({ image: req.file.originalname })
+        .create({
+          image: req.file.originalname,
+          // title: req.body.title,
+          ...req.body,
+        })
         .then(() => {
           res.status(201).send("Ok");
         })
