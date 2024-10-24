@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const cors = require("cors");
 const fs = require("fs");
 const upload = multer({
   dest: "/imagenes",
@@ -10,6 +11,10 @@ const event = require("./models/event");
 
 const app = express();
 
+app.use(cors());
+
+app.use(express.static("images"))
+
 app.get("/", (req, res) => {
   res.send("Hola mundo");
 });
@@ -18,7 +23,7 @@ app.post("/upload", upload.single("file"), (req, res) => {
   console.log(req.body);
   console.log(req.file);
   fs.writeFile(
-    `../planificador_eventos_frontend/src/images/${req.file.originalname}`,
+    `../planificador_eventos_backend/images/${req.file.originalname}`,
     req.file.buffer,
     (err) => {
       if (err) {
@@ -36,6 +41,20 @@ app.post("/upload", upload.single("file"), (req, res) => {
         });
     }
   );
+});
+
+app.get("/events", (req, res) => {
+  event
+    .find({})
+    .sort({ createdAt: -1 })
+    .limit(5)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send("error");
+    });
 });
 
 mongoose.connect("mongodb://localhost:27017/event_planner");
