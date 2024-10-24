@@ -1,8 +1,30 @@
 const express = require("express");
+const multer = require("multer");
+const fs = require("fs");
+const upload = multer({
+  dest: "/imagenes",
+  storage: multer.memoryStorage(),
+});
 const mongoose = require("mongoose");
 
 const app = express();
 
-mongoose.connect("mongodb://localhost:27017");
+app.get("/", (req, res) => {
+  res.send("Hola mundo");
+});
 
-app.listen(3000)
+app.post("/upload", upload.single("file"), (req, res) => {
+  console.log(req.body);
+  console.log(req.file);
+  fs.writeFile("./images/test.jpg", req.file.buffer, (err) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error");
+    }
+    res.status(201).send("Ok");
+  });
+});
+
+// mongoose.connect("mongodb://localhost:27017");
+
+app.listen(3000);
