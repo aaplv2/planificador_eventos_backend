@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
 app.post("/upload", upload.single("file"), (req, res) => {
   console.log(req.body);
   console.log(req.file);
-  fs.writeFile("./images/test.jpg", req.file.buffer, (err) => {
+  fs.writeFile(`../planificador_eventos_frontend/src/images/${req.file.originalname}`, req.file.buffer, (err) => {
     if (err) {
       console.log(err);
       res.status(500).send("Error");
@@ -25,6 +25,6 @@ app.post("/upload", upload.single("file"), (req, res) => {
   });
 });
 
-// mongoose.connect("mongodb://localhost:27017");
+mongoose.connect("mongodb://localhost:27017/event_planner");
 
 app.listen(3000);
