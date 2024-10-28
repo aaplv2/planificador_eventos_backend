@@ -27,13 +27,29 @@ module.exports.getUser = (req, res, next) => {
     });
 };
 
+module.exports.getCurrentUser = (req, res, next) => {
+  User.findById(req.user._id)
+    .then((users) => {
+      if (users) {
+        res.send({ data: users });
+      } else {
+        throw new NotFoundError("No se encontró ningún usuario con ese ID");
+      }
+    })
+    .catch((err) => {
+      if (err.name === "CastError") {
+        next(new BadRequestError("Id de usuario no válida"));
+      } else {
+        next(err);
+      }
+    });
+};
+
 module.exports.createUser = (req, res, next) => {
-  const { name, about, avatar, email, password } = req.body;
+  const { name, email, password } = req.body;
   bcrypt
     .hash(password, 10)
-    .then((hash) =>
-      User.create({ name, about, avatar, email: email, password: hash })
-    )
+    .then((hash) => User.create({ name: name, email: email, password: hash }))
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       next(

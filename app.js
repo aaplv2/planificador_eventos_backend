@@ -1,24 +1,47 @@
 const express = require("express");
-const multer = require("multer");
+const mongoose = require("mongoose");
 const cors = require("cors");
+const { celebrate } = require("celebrate");
+const multer = require("multer");
 const fs = require("fs");
+
 const upload = multer({
   dest: "/imagenes",
   storage: multer.memoryStorage(),
 });
-const mongoose = require("mongoose");
-const event = require("./models/event");
 
+const event = require("./models/event.js");
+const { loginValidator, signUpValidator } = require("./models/validation.js");
+
+const { login, createUser } = require("./controllers/user.js");
+
+const auth = require("./middlewares/auth.js");
+
+const userRoute = require("./routes/user.js");
+
+const { PORT = 3000 } = process.env;
 const app = express();
 
+app.use(express.json());
+
 app.use(cors());
-// app.use(express.json());
+
+app.options("*", cors({ origin: true }));
+
+// mongoose.connect("mongodb://localhost:27017/");
 
 app.use(express.static("images"));
 
 app.get("/", (req, res) => {
   res.send("Hola mundo");
 });
+
+app.post("/signup", celebrate({ body: signUpValidator }), createUser);
+app.post("/signin", celebrate({ body: loginValidator }), login);
+
+app.use(auth);
+
+app.use("/user", userRoute);
 
 app.post("/upload", upload.single("file"), (req, res) => {
   fs.writeFile(
@@ -68,7 +91,7 @@ app.get("/events/:date", (req, res) => {
   const date = new Date(req.params.date);
   date.setHours(0, 0, 0, 0);
   date.setDate(date.getDate() - 1);
-  console.log(date)
+  console.log(date);
   // event
   //   .find({ date: date })
   //   .sort({ time: -1 })
@@ -83,4 +106,6 @@ app.get("/events/:date", (req, res) => {
 
 mongoose.connect("mongodb://localhost:27017/event_planner");
 
-app.listen(3000);
+app.listen(PORT, () => {
+  console.log(`App esta detectando el puerto ${PORT}`);
+});
