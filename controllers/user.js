@@ -12,6 +12,25 @@ const {
 require("dotenv").config();
 const { NODE_ENV, JWT_SECRET } = process.env;
 
+// module.exports.getUsers = (req, res, next) => {
+//   User.find({})
+//     .then((users) => {
+//       if (users) {
+//         console.log(users);
+//         res.send({ data: users });
+//       } else {
+//         throw new NotFoundError("No se encontró ningún usuario");
+//       }
+//     })
+//     .catch((err) => {
+//       if (err.name === "CastError") {
+//         next(new BadRequestError("Id de usuario no válida"));
+//       } else {
+//         next(err);
+//       }
+//     });
+// };
+
 module.exports.getUser = (req, res, next) => {
   User.findById(req.params.id)
     .orFail(() => {
@@ -28,6 +47,7 @@ module.exports.getUser = (req, res, next) => {
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
+  console.log(req.user);
   User.findById(req.user._id)
     .then((users) => {
       if (users) {
