@@ -47,7 +47,6 @@ module.exports.getUser = (req, res, next) => {
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
-  console.log(req.user);
   User.findById(req.user._id)
     .then((users) => {
       if (users) {
@@ -121,6 +120,7 @@ module.exports.login = (req, res, next) => {
         { expiresIn: "7d" }
       );
       res.send({ token });
+      console.log(token);
     })
     .catch((err) => {
       next(new AuthneticationError("Error de autenticación"));
