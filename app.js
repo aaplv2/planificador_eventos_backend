@@ -5,6 +5,10 @@ const { celebrate } = require("celebrate");
 const multer = require("multer");
 const fs = require("fs");
 
+var customParseFormat = require("dayjs/plugin/customParseFormat");
+var utc = require("dayjs/plugin/utc");
+var timezone = require("dayjs/plugin/timezone");
+
 const upload = multer({
   dest: "/imagenes",
   storage: multer.memoryStorage(),
@@ -18,11 +22,17 @@ const { login, createUser } = require("./controllers/user.js");
 const auth = require("./middlewares/auth.js");
 
 const userRoute = require("./routes/user.js");
+const { formatDate } = require("./utils/formatDate.js");
+const dayjs = require("dayjs");
 
 const { PORT = 3000 } = process.env;
 const app = express();
 
 app.use(express.json());
+
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 app.use(cors({ origin: true }));
 
@@ -58,7 +68,6 @@ app.post("/upload", upload.single("file"), (req, res) => {
       event
         .create({
           image: req.file.originalname,
-          // title: req.body.title,
           ...req.body,
           // date
         })
@@ -88,16 +97,31 @@ app.get("/events", (req, res) => {
 });
 
 app.get("/events/:date", (req, res) => {
-  const date = new Date(decodeURIComponent(req.params.date));
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() - 1);
-  const nextDay = new Date(date);
-  nextDay.setDate(nextDay.getDate() + 1);
+  // const date = new Date(decodeURIComponent(req.params.date));
+
+  // const formattedDate = formatDate(date);
+
+  const date = dayjs
+    .utc(decodeURIComponent(req.params.date), "DD/MM/YYYY")
+    .startOf("day")
+    .toDate();
+  // date.startOf(0, "hour").startOf(0, "day").utc();
+
+  // date.setHours(0, 0, 0, 0);
+  // date.setDate(date.getDate() - 1);
+  // const nextDay = new Date(date);
+  // const nextDay = date.add(1, "day").utc();
+
+  const nextDay = dayjs
+    .utc(decodeURIComponent(req.params.date), "DD/MM/YYYY")
+    .endOf("day")
+    .toDate();
+
   event
     .find({
       date: {
-        $gte: date.toISOString(),
-        $lt: nextDay.toISOString(),
+        $gte: date,
+        $lt: nextDay,
       },
     })
     .sort({ time: -1 })
