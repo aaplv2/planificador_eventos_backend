@@ -2,17 +2,17 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const { celebrate } = require("celebrate");
-const multer = require("multer");
-const fs = require("fs");
+// const multer = require("multer");
+// const fs = require("fs");
 
 var customParseFormat = require("dayjs/plugin/customParseFormat");
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone");
 
-const upload = multer({
-  dest: "/imagenes",
-  storage: multer.memoryStorage(),
-});
+// const upload = multer({
+//   dest: "/imagenes",
+//   storage: multer.memoryStorage(),
+// });
 
 const event = require("./models/event.js");
 const { loginValidator, signUpValidator } = require("./models/validation.js");
@@ -22,6 +22,8 @@ const { login, createUser } = require("./controllers/user.js");
 const auth = require("./middlewares/auth.js");
 
 const userRoute = require("./routes/user.js");
+const eventRoute = require("./routes/events.js");
+
 const { formatDate } = require("./utils/formatDate.js");
 const dayjs = require("dayjs");
 
@@ -52,35 +54,33 @@ app.post("/signup", celebrate({ body: signUpValidator }), createUser);
 app.use(auth);
 
 app.use("/user", userRoute);
+app.use("/events", eventRoute);
 
-app.post("/upload", upload.single("file"), (req, res) => {
-  fs.writeFile(
-    `../planificador_eventos_backend/images/${req.file.originalname}`,
-    req.file.buffer,
-    (err) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send("Error");
-      }
+// app.post("/upload", upload.single("file"), (req, res) => {
+//   fs.writeFile(
+//     `../planificador_eventos_backend/images/${req.file.originalname}`,
+//     req.file.buffer,
+//     (err) => {
+//       if (err) {
+//         console.log(err);
+//         res.status(500).send("Error");
+//       }
 
-      // const date = new Date(req.body.date);
-
-      event
-        .create({
-          image: req.file.originalname,
-          ...req.body,
-          // date
-        })
-        .then(() => {
-          res.status(201).send("Ok");
-        })
-        .catch((err) => {
-          res.send("error");
-          console.log(err);
-        });
-    }
-  );
-});
+//       event
+//         .create({
+//           image: req.file.originalname,
+//           ...req.body,
+//         })
+//         .then(() => {
+//           res.status(201).send("Ok");
+//         })
+//         .catch((err) => {
+//           res.send("error");
+//           console.log(err);
+//         });
+//     }
+//   );
+// });
 
 app.get("/events", (req, res) => {
   event
@@ -97,20 +97,10 @@ app.get("/events", (req, res) => {
 });
 
 app.get("/events/:date", (req, res) => {
-  // const date = new Date(decodeURIComponent(req.params.date));
-
-  // const formattedDate = formatDate(date);
-
   const date = dayjs
     .utc(decodeURIComponent(req.params.date), "DD/MM/YYYY")
     .startOf("day")
     .toDate();
-  // date.startOf(0, "hour").startOf(0, "day").utc();
-
-  // date.setHours(0, 0, 0, 0);
-  // date.setDate(date.getDate() - 1);
-  // const nextDay = new Date(date);
-  // const nextDay = date.add(1, "day").utc();
 
   const nextDay = dayjs
     .utc(decodeURIComponent(req.params.date), "DD/MM/YYYY")
