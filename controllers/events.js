@@ -27,7 +27,7 @@ const {
 module.exports.getEvents = (req, res, next) => {
   Event.find({})
     .sort({ date: 1 })
-    // .limit(5)
+    .limit(5)
     .then((data) => {
       res.send(data);
     })
@@ -68,6 +68,20 @@ module.exports.getEventById = (req, res, next) => {
     });
 };
 
+module.exports.postRegisterToEvent = (req, res, next) => {
+  Event.findByIdAndUpdate(req.params.id, req.body, {
+    returnDocument: "after",
+  })
+    .then((event) => res.send({ data: event }))
+    .catch((err) => {
+      if (err.name === "CastError") {
+        next(new BadRequestError("Id de evento no válida"));
+      } else {
+        next(err);
+      }
+    });
+};
+
 module.exports.getEventByDate = (req, res, next) => {
   const date = dayjs
     .utc(decodeURIComponent(req.params.date), "DD/MM/YYYY")
@@ -79,13 +93,12 @@ module.exports.getEventByDate = (req, res, next) => {
     .endOf("day")
     .toDate();
 
-  Event
-    .find({
-      date: {
-        $gte: date,
-        $lt: nextDay,
-      },
-    })
+  Event.find({
+    date: {
+      $gte: date,
+      $lt: nextDay,
+    },
+  })
     .sort({ time: -1 })
     .then((data) => {
       res.send(data);
@@ -97,7 +110,6 @@ module.exports.getEventByDate = (req, res, next) => {
 };
 
 module.exports.createEvent = (req, res, next) => {
-  console.log(req.file);
   fs.writeFile(
     `../planificador_eventos_backend/images/${req.file.originalname}`,
     req.file.buffer,
@@ -106,13 +118,12 @@ module.exports.createEvent = (req, res, next) => {
         console.log(err);
         res.status(500).send("Error");
       }
-      Event
-        .create({
-          image: req.file.originalname,
-          ...req.body,
-        })
+      Event.create({
+        image: req.file.originalname,
+        ...req.body,
+      })
         .then(() => {
-          res.status(201).send("Ok");
+          res.status(201).send({});
         })
         .catch((err) => {
           if (err.name === "CastError") {

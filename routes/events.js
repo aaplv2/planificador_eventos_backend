@@ -9,15 +9,15 @@ const {
   createEvent,
   getEvents,
   getEventByDate,
-  getNextFiveEvents,
+  postRegisterToEvent,
 } = require("../controllers/events");
 
 const router = require("express").Router();
 
 router.get("/", getEvents);
-// router.get("/", getNextFiveEvents);
 router.get("/:date/", getEventByDate);
 router.get("/date/:id", getEventById);
 router.post("/", upload.single("file"), createEvent);
+router.patch("/:id", postRegisterToEvent);
 
 module.exports = router;

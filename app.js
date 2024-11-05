@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 app.post("/signin", celebrate({ body: loginValidator }), login);
 app.post("/signup", celebrate({ body: signUpValidator }), createUser);
 
-app.use(auth);
+// app.use(auth);
 
 app.use("/user", userRoute);
 app.use("/events", eventsRoute);
