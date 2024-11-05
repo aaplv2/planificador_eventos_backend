@@ -1,5 +1,9 @@
-const multer = require("multer");
 const fs = require("fs");
+// const multer = require("multer");
+// const upload = multer({
+//   dest: "/imagenes",
+//   storage: multer.memoryStorage(),
+// });
 
 //dayjs
 const dayjs = require("dayjs");
@@ -23,7 +27,7 @@ const {
 module.exports.getEvents = (req, res, next) => {
   Event.find({})
     .sort({ date: 1 })
-    .limit(5)
+    // .limit(5)
     .then((data) => {
       res.send(data);
     })
@@ -32,6 +36,19 @@ module.exports.getEvents = (req, res, next) => {
       res.send("error");
     });
 };
+
+// module.exports.getNextFiveEvents = (req, res, next) => {
+//   Event.find({})
+//     .sort({ date: 1 })
+//     .limit(5)
+//     .then((data) => {
+//       res.send(data);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       res.send("error");
+//     });
+// };
 
 module.exports.getEventById = (req, res, next) => {
   Event.findById(req.params.id)
@@ -89,8 +106,7 @@ module.exports.createEvent = (req, res, next) => {
         console.log(err);
         res.status(500).send("Error");
       }
-
-      event
+      Event
         .create({
           image: req.file.originalname,
           ...req.body,

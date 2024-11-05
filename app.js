@@ -10,7 +10,7 @@ const { login, createUser } = require("./controllers/user.js");
 const auth = require("./middlewares/auth.js");
 
 const userRoute = require("./routes/user.js");
-const eventRoute = require("./routes/events.js");
+const eventsRoute = require("./routes/events.js");
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -35,7 +35,7 @@ app.post("/signup", celebrate({ body: signUpValidator }), createUser);
 app.use(auth);
 
 app.use("/user", userRoute);
-app.use("/events", eventRoute);
+app.use("/events", eventsRoute);
 
 mongoose.connect("mongodb://localhost:27017/event_planner");
 
