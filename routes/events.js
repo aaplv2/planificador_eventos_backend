@@ -15,6 +15,7 @@ const {
 const router = require("express").Router();
 
 router.get("/", getEvents);
+// router.get("/nextFiveEvents", getNextFiveEvents);
 router.get("/:date/", getEventByDate);
 router.get("/date/:id", getEventById);
 router.post("/", upload.single("file"), createEvent);

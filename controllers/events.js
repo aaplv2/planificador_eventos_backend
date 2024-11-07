@@ -99,13 +99,17 @@ module.exports.getEventByDate = (req, res, next) => {
       $lt: nextDay,
     },
   })
+    .orFail(() => {
+      throw new Error("No se encontró ningún evento con esa fecha");
+    })
     .sort({ time: -1 })
     .then((data) => {
+      console.log("aca")
       res.send(data);
     })
     .catch((err) => {
-      console.log(err);
-      res.send("error");
+      console.log("err");
+      res.status(400).send({});
     });
 };
 
