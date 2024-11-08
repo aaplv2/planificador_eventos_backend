@@ -21,8 +21,6 @@ app.use(cors({ origin: true }));
 
 app.options("*", cors({ origin: true }));
 
-// mongoose.connect("mongodb://localhost:27017");
-
 app.use(express.static("images"));
 
 app.get("/", (req, res) => {
@@ -32,7 +30,7 @@ app.get("/", (req, res) => {
 app.post("/signin", celebrate({ body: loginValidator }), login);
 app.post("/signup", celebrate({ body: signUpValidator }), createUser);
 
-app.use(auth);
+// app.use(auth);
 
 app.use("/user", userRoute);
 app.use("/events", eventsRoute);
