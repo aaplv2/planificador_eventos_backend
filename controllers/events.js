@@ -1,11 +1,5 @@
 const fs = require("fs");
-// const multer = require("multer");
-// const upload = multer({
-//   dest: "/imagenes",
-//   storage: multer.memoryStorage(),
-// });
 
-//dayjs
 const dayjs = require("dayjs");
 
 var customParseFormat = require("dayjs/plugin/customParseFormat");
@@ -36,19 +30,6 @@ module.exports.getEvents = (req, res, next) => {
       res.send("error");
     });
 };
-
-// module.exports.getNextFiveEvents = (req, res, next) => {
-//   Event.find({})
-//     .sort({ date: 1 })
-//     .limit(5)
-//     .then((data) => {
-//       res.send(data);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       res.send("error");
-//     });
-// };
 
 module.exports.getEventById = (req, res, next) => {
   Event.findById(req.params.id)
@@ -104,7 +85,7 @@ module.exports.getEventByDate = (req, res, next) => {
     })
     .sort({ time: -1 })
     .then((data) => {
-      console.log("aca")
+      console.log("aca");
       res.send(data);
     })
     .catch((err) => {
@@ -138,4 +119,19 @@ module.exports.createEvent = (req, res, next) => {
         });
     }
   );
+};
+
+module.exports.deleteEvent = (req, res, next) => {
+  Event.findByIdAndDelete(req.params.id)
+    .orFail(() => {
+      throw new NotFoundError("No se ha encontrado ningun evento con ese id");
+    })
+    .then((event) => res.send(event))
+    .catch((err) => {
+      if (err.name === "CastError") {
+        next(new BadRequestError("Datos de evento no validos"));
+      } else {
+        next(err);
+      }
+    });
 };
