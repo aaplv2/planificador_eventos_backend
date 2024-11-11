@@ -32,7 +32,7 @@ app.post("/signup", celebrate({ body: signUpValidator }), createUser);
 
 // app.use(auth);
 
-app.use("/user", userRoute);
+app.use("/users", userRoute);
 app.use("/events", eventsRoute);
 
 mongoose.connect("mongodb://localhost:27017/event_planner");
