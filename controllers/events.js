@@ -17,6 +17,7 @@ const {
   BadRequestError,
   AuthneticationError,
 } = require("../middlewares/errors");
+const { randomUUID } = require("crypto");
 
 module.exports.getEvents = (req, res, next) => {
   Event.find({})
@@ -50,9 +51,19 @@ module.exports.getEventById = (req, res, next) => {
 };
 
 module.exports.postRegisterToEvent = (req, res, next) => {
-  Event.findByIdAndUpdate(req.params.id, req.body, {
-    returnDocument: "after",
-  })
+  const attendeeTicket = randomUUID();
+  const attendees = req.body.attendees;
+  const lastAttendee = attendees[attendees.length - 1];
+  lastAttendee.attendeeTicket = attendeeTicket;
+  const newAttendees = attendees.splice(attendees.length - 1, 1, lastAttendee);
+  Event.findByIdAndUpdate(
+    req.params.id,
+    //probar con operador de mongodb
+    { attendees: newAttendees },
+    {
+      returnDocument: "after",
+    }
+  )
     .then((event) => res.send({ data: event }))
     .catch((err) => {
       if (err.name === "CastError") {
