@@ -5,6 +5,7 @@ const dayjs = require("dayjs");
 var customParseFormat = require("dayjs/plugin/customParseFormat");
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone");
+var randomstring = require("randomstring");
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -17,7 +18,6 @@ const {
   BadRequestError,
   AuthneticationError,
 } = require("../middlewares/errors");
-const { randomUUID } = require("crypto");
 
 module.exports.getEvents = (req, res, next) => {
   Event.find({})
@@ -51,15 +51,34 @@ module.exports.getEventById = (req, res, next) => {
 };
 
 module.exports.postRegisterToEvent = (req, res, next) => {
-  const attendeeTicket = randomUUID();
+  const attendeeTicket = randomstring.generate(5);
   const attendees = req.body.attendees;
   const lastAttendee = attendees[attendees.length - 1];
   lastAttendee.attendeeTicket = attendeeTicket;
   const newAttendees = attendees.splice(attendees.length - 1, 1, lastAttendee);
   Event.findByIdAndUpdate(
     req.params.id,
-    //probar con operador de mongodb
-    { attendees: newAttendees },
+    { $addToSet: { attendees: lastAttendee } },
+    {
+      returnDocument: "after",
+    }
+  )
+    .then((event) => res.send({ data: event }))
+    .catch((err) => {
+      if (err.name === "CastError") {
+        next(new BadRequestError("Id de evento no válida"));
+      } else {
+        next(err);
+      }
+    });
+};
+
+module.exports.postTaskToEvent = (req, res, next) => {
+  const tasks = req.body.tasks;
+  const lastTasks = tasks[tasks.length - 1];
+  Event.findByIdAndUpdate(
+    req.params.id,
+    { $addToSet: { tasks: lastTasks } },
     {
       returnDocument: "after",
     }
