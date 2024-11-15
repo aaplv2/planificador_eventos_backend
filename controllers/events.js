@@ -115,7 +115,6 @@ module.exports.getEventByDate = (req, res, next) => {
     })
     .sort({ time: -1 })
     .then((data) => {
-      console.log("aca");
       res.send(data);
     })
     .catch((err) => {

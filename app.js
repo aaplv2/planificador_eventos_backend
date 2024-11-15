@@ -33,8 +33,12 @@ app.post("/signup", celebrate({ body: signUpValidator }), createUser);
 app.use("/users", userRoute);
 app.use("/events", eventsRoute);
 
-mongoose.connect("mongodb://localhost:27017/event_planner");
+mongoose.connect(
+  "mongodb+srv://aaplv2:Alexkramer101@cluster0.lrfmf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+);
 
 app.listen(PORT, () => {
   console.log(`App esta detectando el puerto ${PORT}`);
 });
+
+module.exports = app;
