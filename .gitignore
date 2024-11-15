@@ -16,3 +16,4 @@ node_modules
 
 # Entorno
 .env
+.vercel
