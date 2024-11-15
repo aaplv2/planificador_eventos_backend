@@ -21,7 +21,7 @@ app.use(cors({ origin: true }));
 
 app.options("*", cors({ origin: true }));
 
-app.use(express.static("images"));
+app.use(express.static("/api/images"));
 
 app.get("/", (req, res) => {
   res.send("Hola mundo");
