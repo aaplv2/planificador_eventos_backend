@@ -4,7 +4,8 @@
   "description": "tripleten_projecto_final",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "build": "npm run build"
   },
   "repository": {
     "type": "git",
