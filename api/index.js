@@ -7,8 +7,6 @@ const { loginValidator, signUpValidator } = require("./models/validation.js");
 
 const { login, createUser } = require("./controllers/user.js");
 
-const auth = require("./middlewares/auth.js");
-
 const userRoute = require("./routes/user.js");
 const eventsRoute = require("./routes/events.js");
 
@@ -17,9 +15,9 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors({ origin: true }));
+app.use(cors());
 
-app.options("*", cors({ origin: true }));
+app.options("*", cors());
 
 app.use(express.static("/api/images"));
 
