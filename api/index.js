@@ -22,7 +22,7 @@ app.options("*", cors());
 app.use(express.static("/api/images"));
 
 app.get("/", (req, res) => {
-  res.send("Hola mundo");
+  res.send("Hola");
 });
 
 app.post("/signin", celebrate({ body: loginValidator }), login);
