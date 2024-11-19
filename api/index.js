@@ -19,20 +19,29 @@ app.use(express.json());
 
 // app.options("*", cors());
 
-const corsOptions = {
-  origin: [
-    "planificador-eventos-frontend.vercel.app",
-    "cluster0.lrfmf.mongodb.net",
-  ],
-  methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
+// const corsOptions = {
+//   origin: [
+//     "planificador-eventos-frontend.vercel.app",
+//     "cluster0.lrfmf.mongodb.net",
+//   ],
+//   methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
 
-  // Enable this if you need to
-  // send cookies or HTTP authentication
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
+//   // Enable this if you need to
+//   // send cookies or HTTP authentication
+//   credentials: true,
+//   optionsSuccessStatus: 204,
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 app.use(express.static("/api/images"));
 
