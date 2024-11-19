@@ -15,9 +15,21 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors());
+// app.use(cors());
 
-app.options("*", cors());
+// app.options("*", cors());
+
+const corsOptions = {
+  origin: "planificador-eventos-frontend.vercel.app",
+  methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
+
+  // Enable this if you need to
+  // send cookies or HTTP authentication
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.static("/api/images"));
 
