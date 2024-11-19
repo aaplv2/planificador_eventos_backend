@@ -20,7 +20,10 @@ app.use(express.json());
 // app.options("*", cors());
 
 const corsOptions = {
-  origin: "planificador-eventos-frontend.vercel.app",
+  origin: [
+    "planificador-eventos-frontend.vercel.app",
+    "cluster0.lrfmf.mongodb.net",
+  ],
   methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
 
   // Enable this if you need to
