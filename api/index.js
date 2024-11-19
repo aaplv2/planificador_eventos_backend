@@ -13,8 +13,6 @@ const eventsRoute = require("./routes/events.js");
 const { PORT = 3000 } = process.env;
 const app = express();
 
-app.use(express.json());
-
 // app.use(cors());
 
 // app.options("*", cors());
@@ -33,6 +31,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+app.use(express.json());
 
 app.use(express.static("/api/images"));
 
