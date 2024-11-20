@@ -38,8 +38,12 @@ app.get("/", (req, res) => {
   res.send("Hola");
 });
 
-app.post("/signin", celebrate({ body: loginValidator }), login);
-app.post("/signup", celebrate({ body: signUpValidator }), createUser);
+app.post("/signin",
+  // celebrate({ body: loginValidator }),
+   login);
+app.post("/signup",
+  // celebrate({ body: signUpValidator }),
+  createUser);
 
 app.use("/users", userRoute);
 app.use("/events", eventsRoute);
