@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require("mongoose");
-// const cors = require("cors");
 const { celebrate } = require("celebrate");
 var bodyParser = require("body-parser");
 
@@ -25,41 +24,13 @@ app.use(
       "cluster0.lrfmf.mongodb.net",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"], // Incluye 'Authorization'
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
 app.use(bodyParser.json());
 
 app.use(express.json());
-
-// app.use(cors());
-
-// app.options("*", cors());
-
-// const corsOptions = {
-//   origin: [
-//     "planificador-eventos-frontend.vercel.app",
-//     "cluster0.lrfmf.mongodb.net",
-//   ],
-//   methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
-
-//   // Enable this if you need to
-//   // send cookies or HTTP authentication
-//   credentials: true,
-//   optionsSuccessStatus: 204,
-// };
-
-// app.use(cors(corsOptions));
-
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   next();
-// });
 
 app.use(express.static("/api/images"));
 
