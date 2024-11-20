@@ -1,6 +1,6 @@
 const multer = require("multer");
 const upload = multer({
-  dest: "/api/imagenes",
+  dest: "public",
   storage: multer.memoryStorage(),
 });
 
