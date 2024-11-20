@@ -53,7 +53,7 @@ app.use("/users", userRoute);
 app.use("/events", eventsRoute);
 
 mongoose.connect(
-  "mongodb+srv://aaplv2:Alexkramer101@cluster0.lrfmf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  "mongodb+srv://aaplv2:Alexkramer101@cluster0.lrfmf.mongodb.net/event_planner?retryWrites=true&w=majority&appName=Cluster0"
 );
 
 app.listen(PORT, () => {
