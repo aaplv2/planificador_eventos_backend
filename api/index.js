@@ -32,7 +32,8 @@ app.use(
 
 app.use(express.json());
 
-app.use(express.static(__dirname + "/api/images"));
+// app.use(express.static(__dirname + "/api/images"));
+app.use(express.static("public"));
 
 app.get("/", (req, res) => {
   res.send("Hola");
