@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 // const cors = require("cors");
 const { celebrate } = require("celebrate");
+var bodyParser = require("body-parser");
 
 const { loginValidator, signUpValidator } = require("./models/validation.js");
 
@@ -27,6 +28,8 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"], // Incluye 'Authorization'
   })
 );
+
+app.use(bodyParser.json());
 
 app.use(express.json());
 

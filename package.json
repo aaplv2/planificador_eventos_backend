@@ -23,6 +23,7 @@
   "homepage": "https://github.com/aaplv2/planificador_eventos_backend#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
     "celebrate": "^15.0.3",
     "cors": "^2.8.5",
     "dayjs": "^1.11.13",
