@@ -51,8 +51,8 @@ module.exports.createUser = (req, res, next) => {
   bcrypt
     .hash(password, 10)
     .then((hash) => {
-      User.create({ name: name, email: email, password: hash });
       hash = hash;
+      return User.create({ name: name, email: email, password: hash });
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
