@@ -47,16 +47,16 @@ module.exports.getCurrentUser = (req, res, next) => {
 
 module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
+  let hash;
   bcrypt
     .hash(password, 10)
-    .then((hash) => User.create({ name: name, email: email, password: hash }))
+    .then((hash) => {
+      User.create({ name: name, email: email, password: hash });
+      hash = hash;
+    })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      next(
-        new BadRequestError(
-          "Se pasaron datos inválidos a los métodos para crear un usuario."
-        )
-      );
+      next(new BadRequestError(`${name} - ${email} - ${password} - ${hash}`));
     });
 };
 
