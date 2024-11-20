@@ -124,7 +124,7 @@ module.exports.getEventByDate = (req, res, next) => {
 };
 
 module.exports.createEvent = (req, res, next) => {
-  fs.writeFile(`public/${req.file.originalname}`, req.file.buffer, (err) => {
+  fs.writeFile(`../public/${req.file.originalname}`, req.file.buffer, (err) => {
     if (err) {
       console.log(err);
       res.status(500).send("Error");
