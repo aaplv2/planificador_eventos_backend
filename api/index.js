@@ -32,18 +32,22 @@ app.use(
 
 app.use(express.json());
 
-app.use(express.static("/api/images"));
+app.use(express.static(__dirname + "/api/images"));
 
 app.get("/", (req, res) => {
   res.send("Hola");
 });
 
-app.post("/signin",
+app.post(
+  "/signin",
   // celebrate({ body: loginValidator }),
-   login);
-app.post("/signup",
+  login
+);
+app.post(
+  "/signup",
   // celebrate({ body: signUpValidator }),
-  createUser);
+  createUser
+);
 
 app.use("/users", userRoute);
 app.use("/events", eventsRoute);
