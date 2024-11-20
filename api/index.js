@@ -23,7 +23,7 @@ app.use(
       "planificador-eventos-frontend.vercel.app",
       "cluster0.lrfmf.mongodb.net",
     ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
