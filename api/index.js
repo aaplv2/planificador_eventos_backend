@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const { celebrate, Segments } = require("celebrate");
+// const { celebrate, Segments } = require("celebrate");
 var bodyParser = require("body-parser");
 
 const { loginValidator, signUpValidator } = require("./models/validation.js");
@@ -38,12 +38,16 @@ app.get("/", (req, res) => {
   res.send("Hola");
 });
 
-app.post("/signin",
-   celebrate({ [Segments.BODY]: loginValidator }),
-    login);
-app.post("/signup",
-   celebrate({ [Segments.BODY]: signUpValidator }),
-    createUser);
+app.post(
+  "/signin",
+  //  celebrate({ [Segments.BODY]: loginValidator }),
+  login
+);
+app.post(
+  "/signup",
+  //  celebrate({ [Segments.BODY]: signUpValidator }),
+  createUser
+);
 
 app.use("/users", userRoute);
 app.use("/events", eventsRoute);
