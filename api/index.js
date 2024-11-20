@@ -28,11 +28,8 @@ app.use(
   })
 );
 
-// app.use(bodyParser.json());
-
 app.use(express.json());
 
-// app.use(express.static(__dirname + "/api/images"));
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
