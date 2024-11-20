@@ -13,6 +13,21 @@ const eventsRoute = require("./routes/events.js");
 const { PORT = 3000 } = process.env;
 const app = express();
 
+const cors = require("cors");
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://planificador-eventos-frontend.vercel.app",
+      "planificador-eventos-frontend.vercel.app",
+      "cluster0.lrfmf.mongodb.net",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"], // Incluye 'Authorization'
+  })
+);
+
 app.use(express.json());
 
 // app.use(cors());
