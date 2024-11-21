@@ -15,6 +15,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
+      "http://localhost:3001",
       "https://planificador-eventos-frontend.vercel.app",
       "planificador-eventos-frontend.vercel.app",
       "cluster0.lrfmf.mongodb.net",
@@ -27,10 +28,6 @@ app.use(
 app.use(express.json());
 
 app.use(express.static("public"));
-
-app.get("/", (req, res) => {
-  res.send("Hola");
-});
 
 app.post("/signin", login);
 app.post("/signup", createUser);

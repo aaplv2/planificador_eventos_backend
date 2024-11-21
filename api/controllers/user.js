@@ -97,7 +97,8 @@ module.exports.login = (req, res, next) => {
       }
       const token = jwt.sign(
         { _id: userDB._id },
-        NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
+        // NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
+        JWT_SECRET,
         { expiresIn: "7d" }
       );
       res.send({ token });
