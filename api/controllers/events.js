@@ -124,26 +124,30 @@ module.exports.getEventByDate = (req, res, next) => {
 };
 
 module.exports.createEvent = (req, res, next) => {
-  fs.writeFile(`../../public/${req.file.originalname}`, req.file.buffer, (err) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("Error");
-    }
-    Event.create({
-      image: req.file.originalname,
-      ...req.body,
-    })
-      .then(() => {
-        res.status(201).send({});
+  fs.writeFile(
+    `${__dirname}/../../public/${req.file.originalname}`,
+    req.file.buffer,
+    (err) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("Error");
+      }
+      Event.create({
+        image: req.file.originalname,
+        ...req.body,
       })
-      .catch((err) => {
-        if (err.name === "CastError") {
-          next(new BadRequestError("Id de evento no válida"));
-        } else {
-          next(err);
-        }
-      });
-  });
+        .then(() => {
+          res.status(201).send({});
+        })
+        .catch((err) => {
+          if (err.name === "CastError") {
+            next(new BadRequestError("Id de evento no válida"));
+          } else {
+            next(err);
+          }
+        });
+    }
+  );
 };
 
 module.exports.deleteEvent = (req, res, next) => {
