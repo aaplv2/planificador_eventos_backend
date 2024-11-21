@@ -6,13 +6,13 @@ var bodyParser = require("body-parser");
 // const { createRouteHandler } = require("uploadthing/express");
 // const uploadRouter = require("./utils/uploadthing.js");
 
-var ImageKit = require("imagekit");
+// var ImageKit = require("imagekit");
 
-const imagekit = new ImageKit({
-  publicKey: "public_Q9cU9hXZkVVhRHA2aqKAEVmnayU=",
-  privateKey: "private_+MdVvyHq0DS4V72jmRvhE9ut51o=",
-  urlEndpoint: "https://ik.imagekit.io/75cchptl5",
-});
+// const imagekit = new ImageKit({
+//   publicKey: "public_Q9cU9hXZkVVhRHA2aqKAEVmnayU=",
+//   privateKey: "private_+MdVvyHq0DS4V72jmRvhE9ut51o=",
+//   urlEndpoint: "https://ik.imagekit.io/75cchptl5",
+// });
 
 const { loginValidator, signUpValidator } = require("./models/validation.js");
 
