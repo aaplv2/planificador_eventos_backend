@@ -35,7 +35,9 @@ app.use(
   "/api/uploadthing",
   createRouteHandler({
     router: uploadRouter,
-    config: {},
+    config: {
+      token: process.env.UPLOADTHING_TOKEN,
+    },
   })
 );
 
