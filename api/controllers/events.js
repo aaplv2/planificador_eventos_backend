@@ -18,6 +18,7 @@ const {
   BadRequestError,
   AuthneticationError,
 } = require("../middlewares/errors");
+const ImageKit = require("imagekit");
 
 module.exports.getEvents = (req, res, next) => {
   Event.find({})
@@ -124,16 +125,13 @@ module.exports.getEventByDate = (req, res, next) => {
 };
 
 module.exports.createEvent = (req, res, next) => {
-  fs.writeFile(
-    `${__dirname}/../../public/${req.file.originalname}`,
-    req.file.buffer,
-    (err) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).send("Error");
-      }
+  ImageKit.upload({
+    file: req.file,
+    fileName: req.file.originalname,
+  })
+    .then((data) => {
       Event.create({
-        image: req.file.originalname,
+        image: data.url,
         ...req.body,
       })
         .then(() => {
@@ -146,8 +144,35 @@ module.exports.createEvent = (req, res, next) => {
             next(err);
           }
         });
-    }
-  );
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send(err);
+    });
+  // fs.writeFile(
+  //   `${__dirname}/../../public/${req.file.originalname}`,
+  //   req.file.buffer,
+  //   (err) => {
+  //     if (err) {
+  //       console.log(err);
+  //       return res.status(500).send("Error");
+  //     }
+  // Event.create({
+  //   image: req.file.originalname,
+  //   ...req.body,
+  // })
+  //   .then(() => {
+  //     res.status(201).send({});
+  //   })
+  //   .catch((err) => {
+  //     if (err.name === "CastError") {
+  //       next(new BadRequestError("Id de evento no válida"));
+  //     } else {
+  //       next(err);
+  //     }
+  //   });
+  //   }
+  // );
 };
 
 module.exports.deleteEvent = (req, res, next) => {
