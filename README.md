@@ -1,1 +1,0 @@
-# planificador_eventos_backend
