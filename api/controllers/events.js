@@ -132,7 +132,7 @@ module.exports.getEventByDate = (req, res, next) => {
 };
 
 module.exports.createEvent = (req, res, next) => {
-  imageKit.upload({
+  imagekit.upload({
     file: req.file,
     fileName: req.file.originalname,
   })
