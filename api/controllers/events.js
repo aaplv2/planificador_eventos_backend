@@ -120,7 +120,7 @@ module.exports.getEventByDate = (req, res, next) => {
       res.send(data);
     })
     .catch((err) => {
-      console.log("err");
+      console.log("erro de solicitud");
       res.status(400).send({});
     });
 };
