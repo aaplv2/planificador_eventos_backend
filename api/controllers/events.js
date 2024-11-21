@@ -6,6 +6,7 @@ var customParseFormat = require("dayjs/plugin/customParseFormat");
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone");
 var randomstring = require("randomstring");
+// const ImageKit = require("imagekit");
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -18,7 +19,6 @@ const {
   BadRequestError,
   AuthneticationError,
 } = require("../middlewares/errors");
-const ImageKit = require("imagekit");
 
 module.exports.getEvents = (req, res, next) => {
   Event.find({})
@@ -125,7 +125,7 @@ module.exports.getEventByDate = (req, res, next) => {
 };
 
 module.exports.createEvent = (req, res, next) => {
-  ImageKit.upload({
+  imageKit.upload({
     file: req.file,
     fileName: req.file.originalname,
   })
