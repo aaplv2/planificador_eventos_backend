@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 // const { celebrate, Segments } = require("celebrate");
 var bodyParser = require("body-parser");
 
+const createRouteHandler = require("uploadthing/express");
+const uploadRouter = require("./utils/uploadthing.js");
+
 const { loginValidator, signUpValidator } = require("./models/validation.js");
 
 const { login, createUser } = require("./controllers/user.js");
@@ -25,6 +28,14 @@ app.use(
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+app.use(
+  "/api/uploadthing",
+  createRouteHandler({
+    router: uploadRouter,
+    config: {},
   })
 );
 
